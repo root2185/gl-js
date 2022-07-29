@@ -10,9 +10,11 @@ package gl
 import (
 	"encoding/binary"
 	"fmt"
+	"log"
 	"math"
 	"reflect"
 	"runtime"
+	"strconv"
 	"syscall/js"
 	"unsafe"
 )
@@ -420,7 +422,17 @@ func GetBufferParameteri(target, pname Enum) int {
 }
 
 func GetError() Enum {
-	return Enum(c.Call("getError").Int())
+	err := c.Call("getError")
+	var r int
+	switch err.Type() {
+	case js.TypeString:
+		r, _ = strconv.Atoi(err.String())
+	case js.TypeNumber:
+		r = err.Int()
+	default:
+		r = 0
+	}
+	return Enum(r)
 }
 
 func GetBoundFramebuffer() Framebuffer {
