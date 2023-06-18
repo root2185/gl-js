@@ -1,4 +1,4 @@
-module github.com/fyne-io/gl-js
+module github.com/root2185/gl-js
 
 go 1.14
 
